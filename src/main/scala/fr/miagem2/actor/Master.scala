@@ -6,7 +6,7 @@ import akka.Main
 
 class Master extends Actor {
   
-  var mappers: Array[ActorRef] = Array[ActorRef]()
+  var mappers: Array[Mapper] = Array[Mapper]()
 
   def receive = {
     case _ => {
