@@ -1,4 +1,4 @@
-name := "akka-quickstart-scala"
+name := "akka-map_reduce"
 
 version := "1.0"
 
