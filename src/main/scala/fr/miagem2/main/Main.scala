@@ -24,8 +24,9 @@ object Main extends App {
   val reducers = new Array[ActorRef](REDUCER_NUMBER)
   
   case class DocumentMessage(document: Iterator[String])
-  case class ResultMessage(word: String)
+  case class CountWordMessage(word: String)
   case class LineMessage(line: String)
+  case class WordMessage(word: String)
 
   var i = 0;
   while (i < REDUCER_NUMBER) {
@@ -43,5 +44,7 @@ object Main extends App {
   
   val filename = "test.txt"
   master ! DocumentMessage(Source.fromFile(filename).getLines())
+  
+  master ! CountWordMessage("blabla")
 
 }
