@@ -13,8 +13,6 @@ import scala.io.Source
 //#main-class
 object Main extends App {
 
-  //#printer-messages
-
   val MAPPER_NUMBER = 4
   val REDUCER_NUMBER = 4
 
@@ -24,6 +22,10 @@ object Main extends App {
 
   val mappers = new Array[ActorRef](MAPPER_NUMBER)
   val reducers = new Array[ActorRef](REDUCER_NUMBER)
+  
+  case class DocumentMessage(document: Iterator[String])
+  case class ResultMessage(word: String)
+  case class LineMessage(line: String)
 
   var i = 0;
   while (i < REDUCER_NUMBER) {
@@ -38,6 +40,8 @@ object Main extends App {
     mappers(i) ! reducers
     i += 1
   }
-
+  
+  val filename = "test.txt"
+  master ! DocumentMessage(Source.fromFile(filename).getLines())
 
 }
