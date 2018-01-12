@@ -9,23 +9,26 @@ import java.io.File
 import fr.miagem2.main.Main.DocumentMessage
 import fr.miagem2.main.Main.LineMessage
 import fr.miagem2.main.Main.CountWordMessage
+import akka.actor.ActorLogging
 
-class Master extends Actor {
+class Master extends Actor with ActorLogging {
 
   var mappers: ListBuffer[ActorRef] = ListBuffer[ActorRef]()
 
   def receive = {
     case act: ActorRef =>
       mappers += act
-      println("Mapper size : " + mappers.size)
     case DocumentMessage(document: Iterator[String]) =>
+      log.debug("Master received file message")
       var i = 0;
       for (line <- document) {
-        println(s"Master : on envoie : $line")
         mappers(i % mappers.size) ! LineMessage(line)
       }
     case CountWordMessage(word: String) =>
+      log.debug(s"Master received <$word> to count")
       mappers(0) ! CountWordMessage(word)
+    case _ =>
+      log.error("Master received unknow message")
   }
 
 }
